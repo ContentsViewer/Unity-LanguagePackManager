@@ -87,6 +87,17 @@
 *           UnityUpdateに伴う修正; OnLevelWasLoadedの代わりにSceneManagerを使用
 */
 
+
+
+/*
+ *連絡
+ *  2018-2-15(Ken):
+ *   IDを非静的
+ *   理由:
+ *    inspectorで変更できない.
+ * 
+ */
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -96,7 +107,7 @@ using System.Collections;
 
 public class LanguagePackManager : MonoBehaviour
 {
-    public static LanguagePackManager instance = null;
+    public static LanguagePackManager Instance { get; private set; }
 
     //===外部パラメータ(inspector表示)===============================================
     public int languageID = 0;
@@ -143,7 +154,7 @@ public class LanguagePackManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneWasLoaded;
         DontDestroyOnLoad(this);
-        instance = this;
+        Instance = this;
     }
 
     void Update()
@@ -282,7 +293,7 @@ public class LanguagePackManager : MonoBehaviour
             {
                 if (languageID < pack.labelList[label].Count)
                 {
-                    return pack.labelList[label][languageID];
+                    return pack.labelList[label][languageID].Replace("<n>", System.Environment.NewLine);
                 }
             }
         }
